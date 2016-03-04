@@ -1,0 +1,11 @@
+
+.game-container {
+background-color: yellow;
+width: 80%;
+height: 80%;
+}
+header {
+	font-family:'Sigmar One', cursive;
+	font-size: 35px;
+	text-align: center;
+}
