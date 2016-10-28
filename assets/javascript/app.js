@@ -1,6 +1,6 @@
 $( document ).ready(function(){
 
-	var number = 25;
+	var number = 30;
 	var game = [["Q1","A1","A2","A3","A4",2], 	//Q1-Q10 are questions
 				["Q2","B1","B2","B3","B4",2],	//A1-J4 are possible answers to questions Q1-Q10
 				["Q3","C1","C2","C3","C4",2],	//the integer at the end of the array represents
@@ -12,14 +12,28 @@ $( document ).ready(function(){
 				["Q9","I1","I2","I3","I4",2],
 				["Q10","J1","J2","J3","J4",2]
 				];
+	var winCount = 0;
+	var lossCount = 0;
 	var startGame = function(){
 		for (i=0;i < game.length; i++){
 			counter = setInterval(increment,1000);
 			$("#question").html('<p>'+ game[i][0] + '</p>');
 			for(j=1; j<5;j++){
-				$("#answers").append('<button id="multi-choice">' + game[i][j] + '</button>');
+				$("#answers").append('<button class="multi-choice" id="'+ j +'">' + game[i][j] + '</button><br>');
 			}
-			setTimout(timeUp,25000);
+			$(".multi-choice").click(function(){
+				if ($(this).attr('id') == game[i][5]) {
+					alert("Correct!!");
+					$("#correct-count").html(++winCount);
+				}
+				else {
+					alert("Wrong!!");
+					$("#incorrect-count").html(++lossCount);
+				}
+				reset();
+			});
+
+			gameOver = setTimout(timeUp,25000);
 
 
 			//show the question
@@ -32,7 +46,7 @@ $( document ).ready(function(){
 
 			//if their answer is correct, congratulate them;
 
-			//if their answer is incorrect, hit the buzzer and show them the correct answer 
+			//if their answer is incorrect, hit the buzzer and show them the correct answer
 
 			// then show the next question
 		}
@@ -49,11 +63,11 @@ $( document ).ready(function(){
 		clearInterval(counter);
 	}
 	function reset(){
-		number = 5;
+		number = 30;
 	}
 
-	$("#start-button").click(startGame);
+	$("#start-button").click(function(){
+		$(this).hide();
+		startGame();
+	});
 });
-
-
-
