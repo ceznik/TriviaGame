@@ -14,26 +14,35 @@ $( document ).ready(function(){
 				];
 	var winCount = 0;
 	var lossCount = 0;
+	var gameOver;
+	$('.scorecard').hide();
 	var startGame = function(){
-		for (i=0;i < game.length; i++){
+		console.log(game.length);
+		gameOver = setTimeout(function(){alert("GAME OVER!!")},30000);
+		var i = 0;
+		do {
 			counter = setInterval(increment,1000);
 			$("#question").html('<p>'+ game[i][0] + '</p>');
 			for(j=1; j<5;j++){
 				$("#answers").append('<button class="multi-choice" id="'+ j +'">' + game[i][j] + '</button><br>');
-			}
-			$(".multi-choice").click(function(){
-				if ($(this).attr('id') == game[i][5]) {
-					alert("Correct!!");
-					$("#correct-count").html(++winCount);
-				}
-				else {
-					alert("Wrong!!");
-					$("#incorrect-count").html(++lossCount);
-				}
-				reset();
-			});
+      }
+		  $(".multi-choice").click(function(){
+			  if ($(this).attr('id') == game[i][5]) {
+				//alert("Correct!!");
+				 $("#correct-count").html(++winCount);
+			 }
+			 else {
+				//alert("Wrong!!");s
+				 $("#incorrect-count").html(++lossCount);
+			 }
+			 clearTimeout(gameOver);
+			 reset();
+		 });
+		 i++;
+	}
+	while (i < game.length);
 
-			gameOver = setTimout(timeUp,25000);
+}
 
 
 			//show the question
@@ -49,8 +58,8 @@ $( document ).ready(function(){
 			//if their answer is incorrect, hit the buzzer and show them the correct answer
 
 			// then show the next question
-		}
-	}
+
+
 	function increment(){
 		number--;
 		$("#timer").html('<h3>' + number + '</h3>');
@@ -68,6 +77,8 @@ $( document ).ready(function(){
 
 	$("#start-button").click(function(){
 		$(this).hide();
+		$('.scorecard').slideDown("slow");
 		startGame();
+
 	});
 });
