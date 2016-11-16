@@ -12,22 +12,22 @@ $( document ).ready(function(){
 				["Q9","I1","I2","I3","I4",2],
 				["Q10","J1","J2","J3","J4",2]
 				];
+  var currentQuestion = 0;
 	var winCount = 0;
 	var lossCount = 0;
 	var gameOver;
 	$('.scorecard').hide();
-	var startGame = function(){
-		console.log(game.length);
-		gameOver = setTimeout(function(){alert("GAME OVER!!")},30000);
-		var i = 0;
-		do {
+	var loadQuestion = function(){
+		//gameOver = setTimeout(function(){alert("GAME OVER!!")},30000);
+		//var i = 0;
+		//do {
 			counter = setInterval(increment,1000);
-			$("#question").html('<p>'+ game[i][0] + '</p>');
+			$("#question").html('<p>'+ game[currentQuestion][0] + '</p>');
 			for(j=1; j<5;j++){
-				$("#answers").append('<button class="multi-choice" id="'+ j +'">' + game[i][j] + '</button><br>');
+				$("#answers").append('<button class="multi-choice" id="'+ j +'">' + game[currentQuestion][j] + '</button><br>');
       }
 		  $(".multi-choice").click(function(){
-			  if ($(this).attr('id') == game[i][5]) {
+			  if ($(this).attr('id') == game[currentQuestion][5]) {
 				//alert("Correct!!");
 				 $("#correct-count").html(++winCount);
 			 }
@@ -38,9 +38,9 @@ $( document ).ready(function(){
 			 clearTimeout(gameOver);
 			 reset();
 		 });
-		 i++;
-	}
-	while (i < game.length);
+		 //i++;
+	//}
+	//while (i < game.length);
 
 }
 
@@ -78,7 +78,7 @@ $( document ).ready(function(){
 	$("#start-button").click(function(){
 		$(this).hide();
 		$('.scorecard').slideDown("slow");
-		startGame();
+		loadQuestion();
 
 	});
 });
