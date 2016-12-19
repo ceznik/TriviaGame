@@ -18,36 +18,32 @@ $( document ).ready(function(){
 	var gameOver;
 	$('.scorecard').hide();
 	var loadQuestion = function(){
-		//gameOver = setTimeout(function(){alert("GAME OVER!!")},30000);
-		//var i = 0;
-		//do {
-			counter = setInterval(increment,1000);
-			$("#question").html('<p>'+ game[currentQuestion][0] + '</p>');
-			for(j=1; j<5;j++){
-				$("#answers").append('<button class="multi-choice" id="'+ j +'">' + game[currentQuestion][j] + '</button><br>');
-      }
-		  $(".multi-choice").click(function(){
-			  if ($(this).attr('id') == game[currentQuestion][5]) {
-				//alert("Correct!!");
-				 $("#correct-count").html(++winCount);
-				 //currentQuestion++;
-				 console.log(currentQuestion);
-			 }
-			 else {
-				//alert("Wrong!!");s
-				 $("#incorrect-count").html(++lossCount);
-				 //currentQuestion++;
-				 console.log(currentQuestion);
-			 }
-			 clearTimeout(gameOver);
-			 reset();
-		 });
-		 //i++;
-	//}
-	//while (i < game.length);
-
-}
-
+		counter = setInterval(increment,1000);
+		newQuestion(currentQuestion);
+  		$(".multi-choice").click(function(){
+		  if ($(this).attr('id') == game[currentQuestion][5]) {
+			//alert("Correct!!");
+			 $("#correct-count").html(++winCount);
+			 newQuestion(currentQuestion++);
+			 console.log(currentQuestion);
+		 }
+		 else {
+			//alert("Wrong!!");s
+			 $("#incorrect-count").html(++lossCount);
+			 newQuestion(currentQuestion++);
+			 console.log(currentQuestion);
+		 }
+		 clearTimeout(gameOver);
+		 reset();
+		});
+	}
+	function newQuestion(questionId){
+		$("#question").html('<p>'+ game[questionId][0] + '</p>');
+		$("#answers").empty();
+		for(j=1; j<5;j++){
+			$("#answers").append('<button class="multi-choice" id="'+ j +'">' + game[questionId][j] + '</button><br>');
+		}
+	}
 	function increment(){
 		number--;
 		$("#timer").html('<h3>' + number + '</h3>');
@@ -66,12 +62,6 @@ $( document ).ready(function(){
 	$("#start-button").click(function(){
 		$(this).hide();
 		$('.scorecard').slideDown("slow");
-		while (currentQuestion < 10){
-			loadQuestion();
-			currentQuestion++;
-			console.log(currentQuestion);
-		}
-
-
+		loadQuestion();
 	});
 });
