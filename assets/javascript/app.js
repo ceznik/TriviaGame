@@ -30,10 +30,14 @@ $( document ).ready(function(){
 			  if ($(this).attr('id') == game[currentQuestion][5]) {
 				//alert("Correct!!");
 				 $("#correct-count").html(++winCount);
+				 //currentQuestion++;
+				 console.log(currentQuestion);
 			 }
 			 else {
 				//alert("Wrong!!");s
 				 $("#incorrect-count").html(++lossCount);
+				 //currentQuestion++;
+				 console.log(currentQuestion);
 			 }
 			 clearTimeout(gameOver);
 			 reset();
@@ -43,22 +47,6 @@ $( document ).ready(function(){
 	//while (i < game.length);
 
 }
-
-
-			//show the question
-
-			//start the timer
-
-			//listen for the click
-
-			//when user clicks, check their answer
-
-			//if their answer is correct, congratulate them;
-
-			//if their answer is incorrect, hit the buzzer and show them the correct answer
-
-			// then show the next question
-
 
 	function increment(){
 		number--;
@@ -78,7 +66,12 @@ $( document ).ready(function(){
 	$("#start-button").click(function(){
 		$(this).hide();
 		$('.scorecard').slideDown("slow");
-		loadQuestion();
+		while (currentQuestion < 10){
+			loadQuestion();
+			currentQuestion++;
+			console.log(currentQuestion);
+		}
+
 
 	});
 });
