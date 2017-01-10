@@ -20,22 +20,11 @@ $( document ).ready(function(){
 	var loadQuestion = function(){
 		counter = setInterval(increment,1000);
 		newQuestion(currentQuestion);
-  		$(".multi-choice").click(function(){
-		  if ($(this).attr('id') == game[currentQuestion][5]) {
-			//alert("Correct!!");
-			 $("#correct-count").html(++winCount);
-			 newQuestion(currentQuestion++);
-			 console.log(currentQuestion);
-		 }
-		 else {
-			//alert("Wrong!!");s
-			 $("#incorrect-count").html(++lossCount);
-			 newQuestion(currentQuestion++);
-			 console.log(currentQuestion);
-		 }
-		 clearTimeout(gameOver);
-		 reset();
-		});
+  	// 	$(".multi-choice").click(function(){
+
+		//  clearTimeout(gameOver);
+		//  reset();
+		// });
 	}
 	function newQuestion(questionId){
 		$("#question").html('<p>'+ game[questionId][0] + '</p>');
@@ -63,5 +52,31 @@ $( document ).ready(function(){
 		$(this).hide();
 		$('.scorecard').slideDown("slow");
 		loadQuestion();
+	});
+
+	$('.multi-choice').click(function(){
+		console.log("$(this).attr('id')");
+	});
+
+
+//note: document.on function is needed here becuase the multi-choice class is not generated when the page first loads
+	$(document).on('click', '.multi-choice', function(e){
+		if ($(this).attr('id') == game[currentQuestion][5]) {
+		//alert("Correct!!");
+		 $("#correct-count").html(++winCount);
+		 newQuestion(currentQuestion++);
+		 console.log(currentQuestion);
+	 }
+	 else {
+		//alert("Wrong!!");s
+		 $("#incorrect-count").html(++lossCount);
+		 newQuestion(currentQuestion++);
+		 console.log(currentQuestion);
+	 }
+	 reset();
+	});
+
+	$(document).on('click', '#start-over', function(e){
+		console.log("start over button clicked");
 	});
 });
