@@ -15,30 +15,40 @@ $( document ).ready(function(){
   var currentQuestion = 0;
 	var winCount = 0;
 	var lossCount = 0;
+	var noAnsCount = 0;
 	var gameOver;
 	$('.scorecard').hide();
-	var loadQuestion = function(){
-		counter = setInterval(increment,1000);
-		newQuestion(currentQuestion);
-  	// 	$(".multi-choice").click(function(){
-
-		//  clearTimeout(gameOver);
-		//  reset();
-		// });
-	}
+	$('#timer-container').hide();
 	function newQuestion(questionId){
+		reset();
+		counter = setInterval(increment,1000);
+		console.log("loading question: " + questionId);
 		$("#question").html('<p>'+ game[questionId][0] + '</p>');
 		$("#answers").empty();
 		for(j=1; j<5;j++){
-			$("#answers").append('<button class="multi-choice" id="'+ j +'">' + game[questionId][j] + '</button><br>');
+			$("#answers").append('<button class="multi-choice btn-primary" id="'+ j +'">' + game[questionId][j] + '</button><br>');
 		}
 	}
 	function increment(){
 		number--;
 		$("#timer").html('<h3>' + number + '</h3>');
 		if(number === 0){
+			console.log('Time up!');
 			stop();
-			alert('Time up!');
+			if(currentQuestion == game.length - 1){
+				results();
+			}
+			else{
+				$("#result-panel").html('<h2>TIME\'s UP!!!</h2>');
+				$("#result-panel").append('<h3>The correct answer was ' + game[currentQuestion][game[currentQuestion][5]] + '</h3>');
+				$("#result-panel").append('<img src="http://lorempixel.com/400/200/">');
+				$("#unanswered-count").html(++noAnsCount);
+				setTimeout(function(){
+					$("#result-panel").empty();
+					newQuestion(++currentQuestion);
+				},3*1000);
+				console.log(currentQuestion);
+			}
 		}
 	}
 	function stop(){
@@ -48,35 +58,68 @@ $( document ).ready(function(){
 		number = 30;
 	}
 
+  function results(){
+		console.log("show results");
+		$('.play-area').fadeOut("slow");
+	  $('.scorecard').slideDown("slow");
+		$('.game-container').append('<button class="btn-success" id="start-over">Start Over</button>');
+	}
+
 	$("#start-button").click(function(){
 		$(this).hide();
-		$('.scorecard').slideDown("slow");
-		loadQuestion();
+		$('#timer-container').fadeIn("slow");
+		newQuestion(currentQuestion);
 	});
 
-	$('.multi-choice').click(function(){
-		console.log("$(this).attr('id')");
-	});
 
 
 //note: document.on function is needed here becuase the multi-choice class is not generated when the page first loads
 	$(document).on('click', '.multi-choice', function(e){
+		stop();
 		if ($(this).attr('id') == game[currentQuestion][5]) {
-		//alert("Correct!!");
-		 $("#correct-count").html(++winCount);
-		 newQuestion(currentQuestion++);
-		 console.log(currentQuestion);
+		//Correct Answer
+		$("#result-panel").html('<h2>CORRECT!!</h2>');
+		$("#result-panel").append('<img src="http://lorempixel.com/400/200/">');
+		$("#correct-count").html(++winCount);
+		setTimeout(function(){
+			$("#result-panel").empty();
+			if(currentQuestion == game.length - 1){
+				results();
+			}
+			else{
+			newQuestion(++currentQuestion);
+		  }
+		},3*1000);
+    console.log(currentQuestion);
 	 }
 	 else {
-		//alert("Wrong!!");s
-		 $("#incorrect-count").html(++lossCount);
-		 newQuestion(currentQuestion++);
-		 console.log(currentQuestion);
+		//Incorrect answer
+		$("#result-panel").html('<h2>INCORRECT!!</h2>');
+		$("#result-panel").append('<img src="http://lorempixel.com/400/200/">');
+		$("#incorrect-count").html(++lossCount);
+		setTimeout(function(){
+			$("#result-panel").empty();
+			if(currentQuestion == game.length -1){
+				results();
+			}
+			else{
+			newQuestion(++currentQuestion);
+		  }
+		},3*1000);
+		console.log(currentQuestion);
 	 }
-	 reset();
 	});
 
 	$(document).on('click', '#start-over', function(e){
 		console.log("start over button clicked");
+		currentQuestion = 0;
+	  winCount = 0;
+		lossCount = 0;
+		noAnsCount = 0;
+		$('.play-area').show("slow");
+		$(this).hide();
+		$('.scorecard').hide();
+		newQuestion(currentQuestion);
 	});
+
 });
